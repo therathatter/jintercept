@@ -1,3 +1,6 @@
-[submodule "vendor/nuklear"]
-	path = vendor/nuklear
-	url = https://github.com/Immediate-Mode-UI/Nuklear
+[submodule "vendor/glfw"]
+	path = vendor/glfw
+	url = https://github.com/glfw/glfw
+[submodule "vendor/imgui"]
+	path = vendor/imgui
+	url = https://github.com/ocornut/imgui
