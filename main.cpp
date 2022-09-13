@@ -3,21 +3,27 @@
 #include <Windows.h>
 #include <thread>
 #include <atomic>
-#include "gui/gui.h"
+#include "hooks/common.h"
+#include "gui/window_manager.h"
+#include "gui/main_window.h"
 
 bool DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     static std::atomic_bool running = true;
     static std::thread main_thread([&] () {
         try {
-            gui::init();
+            hooks::init();
 
-            while (gui::render() && running) {
+            static window_manager wm;
 
+            const auto& window = wm.create<main_window>("jintercept", 300, 400);
+
+            while (window->render()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
 
-            gui::shutdown();
+            FreeLibraryAndExitThread(hinstDLL, 0);
         } catch (const std::runtime_error& e) {
-            std::cerr << "Fatal error: " << e.what();
+            MessageBoxA(nullptr, e.what(), "jintercept", 0);
         };
     });
 
