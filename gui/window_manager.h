@@ -1,11 +1,9 @@
-//
-// Created by root on 9/13/2022.
-//
 
 #ifndef JINTERCEPT_WINDOW_MANAGER_H
 #define JINTERCEPT_WINDOW_MANAGER_H
 
 #include "window.h"
+
 #include <vector>
 #include <memory>
 

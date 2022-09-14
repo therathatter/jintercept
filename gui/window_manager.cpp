@@ -1,6 +1,3 @@
-//
-// Created by root on 9/13/2022.
-//
 
 #include "window_manager.h"
 

@@ -1,7 +1,8 @@
 
+#include "common.h"
+
 #include <stdexcept>
 #include <MinHook.h>
-#include "common.h"
 
 void hooks::init() {
     if (MH_Initialize() != MH_OK) {

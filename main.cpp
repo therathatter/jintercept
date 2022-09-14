@@ -1,11 +1,12 @@
 
+#include "hooks/common.h"
+#include "gui/window_manager.h"
+#include "gui/main_window.h"
+
 #include <iostream>
 #include <Windows.h>
 #include <thread>
 #include <atomic>
-#include "hooks/common.h"
-#include "gui/window_manager.h"
-#include "gui/main_window.h"
 
 bool DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     static std::atomic_bool running = true;

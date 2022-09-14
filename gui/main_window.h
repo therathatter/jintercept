@@ -1,6 +1,3 @@
-//
-// Created by root on 9/13/2022.
-//
 
 #ifndef JINTERCEPT_MAIN_WINDOW_H
 #define JINTERCEPT_MAIN_WINDOW_H

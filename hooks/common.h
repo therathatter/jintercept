@@ -1,3 +1,4 @@
+
 #ifndef JINTERCEPT_COMMON_H
 #define JINTERCEPT_COMMON_H
 
