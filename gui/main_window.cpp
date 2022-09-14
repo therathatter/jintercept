@@ -6,15 +6,19 @@
 #include "../class/package_manager.h"
 
 #include <imgui.h>
+#include <memory>
+
+klass empty_klass{};
+std::reference_wrapper<const klass> active_klass = empty_klass;
 
 void render_package(const package& package) {
-    for (const auto& [name, subpackage] : package.subpackages) {
-        if (ImGui::TreeNode(name.c_str())) {
+    for (const auto& [subpackage_name, subpackage] : package.subpackages) {
+        if (ImGui::TreeNode(subpackage_name.c_str())) {
             render_package(subpackage);
 
-            for (const auto& [subpackage_name, klass] : package.classes) {
-                if (ImGui::Selectable(subpackage_name.c_str())) {
-
+            for (const auto& [name, klass] : subpackage.classes) {
+                if (ImGui::Selectable(name.c_str())) {
+                    active_klass = klass;
                 }
             }
 
@@ -48,12 +52,38 @@ void main_window::glfw_callback() {
         }
         ImGui::EndMenuBar();
 
-        if (ImGui::BeginChild("##loaded_classes")) {
+        // Two children, exactly the same size, next to each other.
+        ImVec2 available_size = ImGui::GetContentRegionAvail();
+        ImVec2 child_size = available_size;
+        child_size.x /= 2;
+        // Compensate for the window padding
+        child_size.x -= ImGui::GetStyle().WindowPadding.x / 2;
+
+        // If the active class has a name, then a class has been selected
+        bool class_selected = !active_klass.get().name.empty();
+
+        // If no class has been selected, take up all the available space.
+        if (ImGui::BeginChild("##loaded_classes", class_selected ? child_size : available_size, true)) {
             ImGui::Text("Loaded classes");
             // Recursively render each package, starting at the root package
             render_package(package_manager::get_root());
         }
         ImGui::EndChild();
+
+        ImGui::SameLine();
+
+        if (class_selected) {
+            if (ImGui::BeginChild("##active_class", child_size, true)) {
+                ImGui::Text("Active class");
+
+                const auto& klass = active_klass.get();
+
+                ImGui::Text("Name: %s", klass.name.c_str());
+                ImGui::Text("Source: %s", klass.source.c_str());
+                ImGui::Text("Byte count: %zu", klass.code.size());
+            }
+            ImGui::EndChild();
+        }
 
         ImGui::End();
     }
