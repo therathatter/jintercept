@@ -9,11 +9,11 @@ klass empty_klass{};
 std::reference_wrapper<const klass> active_klass = empty_klass;
 
 void render_package(const package& package) {
-    for (const auto& [subpackage_name, subpackage] : package.subpackages) {
+    for (const auto& [subpackage_name, subpackage] : package.m_subpackages) {
         if (ImGui::TreeNode(subpackage_name.c_str())) {
             render_package(subpackage);
 
-            for (const auto& [name, klass] : subpackage.classes) {
+            for (const auto& [name, klass] : subpackage.m_classes) {
                 if (ImGui::Selectable(name.c_str())) {
                     active_klass = klass;
                 }
@@ -57,7 +57,7 @@ void main_window::glfw_callback() {
         child_size.x -= ImGui::GetStyle().WindowPadding.x / 2;
 
         // If the active class has a name, then a class has been selected
-        bool class_selected = !active_klass.get().name.empty();
+        bool class_selected = !active_klass.get().m_name.empty();
 
         // If no class has been selected, take up all the available space.
         if (ImGui::BeginChild("##loaded_classes", class_selected ? child_size : available_size, true)) {
@@ -75,9 +75,9 @@ void main_window::glfw_callback() {
 
                 const auto& klass = active_klass.get();
 
-                ImGui::Text("Name: %s", klass.name.c_str());
-                ImGui::Text("Source: %s", klass.source.c_str());
-                ImGui::Text("Byte count: %zu", klass.code.size());
+                ImGui::Text("Name: %s", klass.m_name.c_str());
+                ImGui::Text("Source: %s", klass.m_source.c_str());
+                ImGui::Text("Byte count: %zu", klass.m_code.size());
             }
             ImGui::EndChild();
         }

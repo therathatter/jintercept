@@ -11,18 +11,18 @@ klass& package_manager::get_class(std::string name) {
     while ((pos = name.find('/')) != std::string::npos) {
         token = name.substr(0, pos);
 
-        target = target.get().subpackages[token];
+        target = target.get().m_subpackages[token];
         name.erase(0, pos + 1);
     }
 
-    return target.get().classes[name];
+    return target.get().m_classes[name];
 }
 
 void package_manager::add_class(const std::string &name, const std::string &source, const jbyte *buf, int size) {
     const std::lock_guard<std::mutex> lock(get_mutex());
     auto &klass = get_class(name);
 
-    klass.name = name;
-    klass.source = source;
-    klass.code = {buf, buf + size};
+    klass.m_name = name;
+    klass.m_source = source;
+    klass.m_code = {buf, buf + size};
 }
