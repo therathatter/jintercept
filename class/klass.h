@@ -7,9 +7,9 @@
 
 class klass {
 public:
-    std::string name;
-    std::string source;
-    std::vector<uint8_t> code;
+    std::string m_name;
+    std::string m_source;
+    std::vector<uint8_t> m_code;
 };
 
 #endif //JINTERCEPT_KLASS_H

@@ -8,8 +8,8 @@
 
 class package {
 public:
-    std::map<std::string, klass> classes;
-    std::map<std::string, package> subpackages;
+    std::map<std::string, klass> m_classes;
+    std::map<std::string, package> m_subpackages;
 };
 
 #endif //JINTERCEPT_PACKAGE_H
