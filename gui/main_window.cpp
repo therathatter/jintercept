@@ -4,6 +4,8 @@
 
 #include <imgui.h>
 #include <memory>
+#include <fstream>
+#include <filesystem>
 
 klass empty_klass{};
 std::reference_wrapper<const klass> active_klass = empty_klass;
@@ -21,6 +23,15 @@ void render_package(const package& package) {
 
             ImGui::TreePop();
         }
+    }
+}
+
+void dump_package_to_disk(const package& package) {
+    for (const auto& [subpackage_name, subpackage] : package.m_subpackages) {
+        dump_package_to_disk(subpackage);
+
+        for (const auto& [name, klass] : subpackage.m_classes)
+            klass.write_to_disk();
     }
 }
 
@@ -64,6 +75,9 @@ void main_window::glfw_callback() {
             ImGui::Text("Loaded classes");
             // Recursively render each package, starting at the root package
             render_package(package_manager::get_root());
+
+            if (ImGui::Button("Reconstruct JAR"))
+                dump_package_to_disk(package_manager::get_root());
         }
         ImGui::EndChild();
 
@@ -78,6 +92,10 @@ void main_window::glfw_callback() {
                 ImGui::Text("Name: %s", klass.m_name.c_str());
                 ImGui::Text("Source: %s", klass.m_source.c_str());
                 ImGui::Text("Byte count: %zu", klass.m_code.size());
+
+                if (ImGui::Button("Write class to disk")) {
+                    klass.write_to_disk();
+                }
             }
             ImGui::EndChild();
         }
