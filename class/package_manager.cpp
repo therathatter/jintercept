@@ -22,7 +22,7 @@ void package_manager::add_class(const std::string &name, const std::string &sour
     const std::lock_guard<std::mutex> lock(get_mutex());
     auto& klass = get_class(name);
 
-    klass.m_name = name.substr(name.find_last_of('/'));
+    klass.m_name = name.substr(name.find_last_of('/') + 1);
     klass.m_source = source;
     klass.m_code = {buf, buf + size};
     klass.m_path = name.substr(0, name.find_last_of('/'));
