@@ -93,9 +93,8 @@ void main_window::glfw_callback() {
                 ImGui::Text("Source: %s", klass.m_source.c_str());
                 ImGui::Text("Byte count: %zu", klass.m_code.size());
 
-                if (ImGui::Button("Write class to disk")) {
+                if (ImGui::Button("Write class to disk"))
                     klass.write_to_disk();
-                }
             }
             ImGui::EndChild();
         }
