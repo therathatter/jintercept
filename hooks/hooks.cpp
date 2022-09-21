@@ -3,16 +3,18 @@
 
 #include <stdexcept>
 #include <MinHook.h>
+#include <thread>
 
 void hooks::init() {
     if (MH_Initialize() != MH_OK) {
         throw std::runtime_error("Failed to initialize MinHook");
     }
 
-    HMODULE jvm = GetModuleHandleA("jvm.dll");
+    HMODULE jvm = nullptr;
 
-    if (!jvm) {
-        throw std::runtime_error("Failed to find jvm.dll");
+    while (!jvm) {
+        jvm = GetModuleHandleA("jvm.dll");
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     void* define_class              = reinterpret_cast<void*>(GetProcAddress(jvm, "JVM_DefineClass"));
