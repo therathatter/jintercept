@@ -20,9 +20,10 @@ klass& package_manager::get_class(std::string name) {
 
 void package_manager::add_class(const std::string &name, const std::string &source, const jbyte *buf, int size) {
     const std::lock_guard<std::mutex> lock(get_mutex());
-    auto &klass = get_class(name);
+    auto& klass = get_class(name);
 
     klass.m_name = name;
     klass.m_source = source;
     klass.m_code = {buf, buf + size};
+    klass.m_path = name.substr(0, name.find_last_of('/'));
 }

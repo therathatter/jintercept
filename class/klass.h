@@ -9,6 +9,7 @@ class klass {
 public:
     std::string m_name;
     std::string m_source;
+    std::string m_path;
     std::vector<uint8_t> m_code;
 };
 
