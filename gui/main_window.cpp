@@ -11,16 +11,15 @@ klass empty_klass{};
 std::reference_wrapper<const klass> active_klass = empty_klass;
 
 void render_package(const package& package) {
+    for (const auto& [name, klass] : package.m_classes) {
+        if (ImGui::Selectable(name.c_str())) {
+            active_klass = klass;
+        }
+    }
+
     for (const auto& [subpackage_name, subpackage] : package.m_subpackages) {
         if (ImGui::TreeNode(subpackage_name.c_str())) {
             render_package(subpackage);
-
-            for (const auto& [name, klass] : subpackage.m_classes) {
-                if (ImGui::Selectable(name.c_str())) {
-                    active_klass = klass;
-                }
-            }
-
             ImGui::TreePop();
         }
     }
